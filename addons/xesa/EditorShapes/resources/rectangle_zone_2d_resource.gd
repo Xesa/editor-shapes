@@ -32,7 +32,7 @@ class_name RectangleZone2DResource extends Resource
 @export var replace_fill_color := false
 
 ## The color used for the outline, handles and fill color used in the editor.
-@export var editor_color := Color(0.35, 1.0, 0.35, 1.0)
+@export var editor_color := RectangleZone2D.DEFAULT_EDITOR_COLOR
 
 ## The width of the rectangle outline in pixels.
 @export_range(1, 4, 1, "prefer_slider", "suffix:px")
