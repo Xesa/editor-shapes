@@ -11,3 +11,5 @@
 !media/**
 !.gitattributes
 !.gitignore
+!LICENSE
+!README.md
