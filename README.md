@@ -14,33 +14,25 @@ The main advantage of this plugin is that every node in Godot that allows you to
 
 The plugin allows you to drag the shape from each corner and side. Holding **Alt** makes it extend in both directions. Holding **Ctrl/Command** keeps it square.
 
-<p align="center">
-  <img src="media/gif1.gif" alt="Works like a built-in editable shape">
-</p>
+<p align="center"><img width="60%" <img width="100%" src="media/gif1.gif" alt="Works like a built-in editable shape"></p>
 
 ### Snap to grid, customizable for each node
 
 Set the snap grid size for each node, or share the same configuration between multiple nodes by using a shared resource.
 
-<p align="center">
-  <img src="media/gif2.gif" alt="Snap to grid, customizable for each node">
-</p>
+<p align="center"><img width="60%" src="media/gif2.gif" alt="Snap to grid, customizable for each node"></p>
 
 ### Customize editor colors and make the shape visible at runtime
 
 You can set custom colors for the shape's outline and handles in the editor. You can also make the shape visible at runtime, giving it a similar visual role to a `ColorRect` while keeping it within the `Node2D` hierarchy.
 
-<p align="center">
-  <img src="media/gif3.gif" alt="Customize editor colors and runtime visibility">
-</p>
+<p align="center"><img width="60%" src="media/gif3.gif" alt="Customize editor colors and runtime visibility"></p>
 
 ### Create masks
 
 Add a mask that makes the shape invisible within a defined area. A mask node doesn't necessarily need to be a child of the masked node; it can be placed anywhere in the scene tree.
 
-<p align="center">
-  <img src="media/gif4.gif" alt="Create masks">
-</p>
+<p align="center"><img width="60%" src="media/gif4.gif" alt="Create masks"></p>
 
 # How to use
 
@@ -51,7 +43,7 @@ The plugin is straightforward to use. To define a shape, simply add a `Rectangle
 - Add a resource to the `Zone Configuration` property. If no resource is assigned, the node will use a default configuration.
 - To make the shape visible at runtime, set the `Visible on Runtime` property to `true`. You can also change the `Color` property.
 - If you set `Always Visible` to `true`, the shape's outline will always be visible in the editor, even when neither the node nor one of its direct parents is selected.
-- You can tweak the remaining properties to configure snapping and editor visibility.
+- You can tweak the other properties to configure snapping and editor visibility.
 
 ### Masking
 

@@ -35,7 +35,7 @@ The plugin is straightforward to use. To define a shape, simply add a `Rectangle
 - Add a resource to the `Zone Configuration` property. If no resource is assigned, the node will use a default configuration.
 - To make the shape visible at runtime, set the `Visible on Runtime` property to `true`. You can also change the `Color` property.
 - If you set `Always Visible` to `true`, the shape's outline will always be visible in the editor, even when neither the node nor one of its direct parents is selected.
-- You can tweak the remaining properties to configure snapping and editor visibility.
+- You can tweak the other properties to configure snapping and editor visibility.
 
 ### Masking
 
