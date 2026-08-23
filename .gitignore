@@ -1,10 +1,11 @@
-# Godot 4+ specific ignores
-.godot/
-/android/
 
-.editorconfig
+# Ignore
+*
 *.import
-project.godot
-icon.svg
 
-scenes
+
+# Push
+!addons
+!addons/**
+!.gitattributes
+!.gitignore
