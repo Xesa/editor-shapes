@@ -2,7 +2,7 @@
 
 EditorShapes is a small plugin for Godot 4.X that allows you to define shapes directly in the editor for drawing or logic purposes.
 
-The main purpose of this plugin is to provide editable shapes for nodes that don't inherit from the `Node2D` hierarchy and therefore don't have the same handle-based editing workflow available in the editor.
+The main advantage of this plugin is that every node in Godot that allows you to define a shape and edit it by dragging its handles is either a physics based node or a `Control` node that doesn't inherit from the `Node2D` hierarchy. This plugin adds that same functionality, with a `Node2D` based node that doesn't implement any physics behaviour.
 
 > [!warning]
 > This is a very early version of the plugin. Although it works well and has been tested, expect breaking changes in future updates.
