@@ -41,6 +41,8 @@ func is_visible_on_runtime() -> bool:
 	return zone_configuration.visible_on_runtime if zone_configuration else false
 
 func replaces_editor_color() -> bool:
+	if is_visible_on_runtime():
+		return true
 	return zone_configuration.replace_fill_color if zone_configuration else false
 
 func is_always_visible() -> bool:
@@ -71,7 +73,6 @@ func get_global_rect() -> Rect2:
 func get_local_rect() -> Rect2:
 	return Rect2(-size / 2.0, size)
 	
-	
 # endregion
 
 
@@ -80,7 +81,7 @@ func get_local_rect() -> Rect2:
 func add_mask(mask : RectangleMaskingZone2D) -> void:
 	masking_zones.append(mask)
 	_build_geometry()
-
+	
 # endregion
 
 
