@@ -5,8 +5,6 @@ extends EditorPlugin
 
 var selected_parent : Node2D
 var selected: RectangleZone2D
-var snap_enabled : bool
-var snap_size : Vector2
 
 # endregion
 
@@ -60,10 +58,6 @@ func _edit(object : Object) -> void:
 	elif object is Node2D:
 		selected = null
 		selected_parent = object
-	
-	if selected:
-		snap_enabled = selected.is_snap_enabled()
-		snap_size = selected.get_snap_size()
 
 	dragging = false
 	drag_handle = -1
@@ -99,6 +93,11 @@ func _forward_canvas_draw_over_viewport(overlay : Control) -> void:
 				_draw_rectangle(overlay, node)
 
 	if selected:
+		
+		for node in selected.find_children("*", "RectangleZone2D", true, false):
+			if !node.is_always_visible():
+				_draw_rectangle(overlay, node)
+				
 		if !selected.is_always_visible():
 			_draw_rectangle(overlay, selected)
 			
@@ -187,7 +186,7 @@ func _forward_canvas_gui_input(event : InputEvent) -> bool:
 				return true
 
 	if event is InputEventMouseMotion and dragging:
-		_resize_from_handle(event.position, event.alt_pressed)
+		_resize_from_handle(event.position, event.alt_pressed, event.ctrl_pressed)
 		update_overlays()
 		return true
 
@@ -236,6 +235,8 @@ func _manage_undo_redo() -> void:
 # region Snapping Methods
 
 func _snap_point(point : Vector2) -> Vector2:
+	
+	var snap_size := selected.get_snap_size()
 
 	if not is_zero_approx(snap_size.x):
 		point.x = round(point.x / snap_size.x) * snap_size.x
@@ -248,6 +249,7 @@ func _snap_point(point : Vector2) -> Vector2:
 	
 func _snap_size(size : Vector2) -> Vector2:
 	var result := drag_snapped_size
+	var snap_size := selected.get_snap_size()
 
 	if not is_zero_approx(snap_size.x):
 		result.x = _snap_axis(
@@ -287,6 +289,7 @@ func _snap_axis(
 	
 func _snap_size_to_grid(size : Vector2) -> Vector2:
 	var result := size
+	var snap_size := selected.get_snap_size()
 
 	if not is_zero_approx(snap_size.x):
 		result.x = round(size.x / snap_size.x) * snap_size.x
@@ -327,7 +330,12 @@ func _get_handle_positions() -> PackedVector2Array:
 	return points
 
 
-func _resize_from_handle(mouse_position : Vector2, centered : bool) -> void:
+func _resize_from_handle(
+	mouse_position: Vector2,
+	centered: bool,
+	squared: bool
+) -> void:
+
 	var transform := EditorInterface.get_editor_viewport_2d().get_final_transform()
 	var inverse := transform.affine_inverse()
 
@@ -376,25 +384,48 @@ func _resize_from_handle(mouse_position : Vector2, centered : bool) -> void:
 	var new_handle := start_handle + mouse_delta
 	var new_size := drag_start_size
 
-	if drag_handle >= 4:
+	if centered:
 		match drag_handle:
-			4, 6:
-				new_size.y = abs(new_handle.y - fixed_point.y)
-			5, 7:
-				new_size.x = abs(new_handle.x - fixed_point.x)
-	else:
-		new_size = (new_handle - fixed_point).abs()
+			0, 1, 2, 3:
+				new_size = new_handle.abs() * 2.0
 
-	if snap_enabled:
+			4, 6:
+				new_size.y = abs(new_handle.y) * 2.0
+
+			5, 7:
+				new_size.x = abs(new_handle.x) * 2.0
+
+	else:
+		if drag_handle >= 4:
+			match drag_handle:
+				4, 6:
+					new_size.y = abs(new_handle.y - fixed_point.y)
+
+				5, 7:
+					new_size.x = abs(new_handle.x - fixed_point.x)
+		else:
+			new_size = (new_handle - fixed_point).abs()
+
+	# Squared
+	if squared:
+		var side := max(new_size.x, new_size.y)
+		new_size = Vector2(side, side)
+
+	# Snapped
+	if selected.is_snap_enabled():
 		new_size = _snap_size(new_size)
+		drag_snapped_size = new_size
+	else:
 		drag_snapped_size = new_size
 
 	new_size.x = max(new_size.x, 1.0)
 	new_size.y = max(new_size.y, 1.0)
 
+	# Centered
 	if centered:
 		selected.size = new_size
 		selected.position = drag_start_position
+
 	else:
 		var new_center := Vector2.ZERO
 
