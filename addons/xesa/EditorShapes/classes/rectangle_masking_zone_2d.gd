@@ -41,9 +41,7 @@ func _ready() -> void:
 
 
 func _draw() -> void:
-	
-	if Engine.is_editor_hint():
-		draw_rect(Rect2(-size / 2.0, size), get_color())
+	pass
 		
 		
 func add_mask(mask : RectangleMaskingZone2D) -> void:
