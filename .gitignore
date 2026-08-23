@@ -7,5 +7,7 @@
 # Push
 !addons
 !addons/**
+!media
+!media/**
 !.gitattributes
 !.gitignore
