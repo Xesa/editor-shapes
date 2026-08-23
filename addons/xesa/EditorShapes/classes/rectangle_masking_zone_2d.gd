@@ -19,12 +19,17 @@
 @icon("../icons/rectangle_masking_zone_2d.svg")
 class_name RectangleMaskingZone2D extends RectangleZone2D
 
+const DEFAULT_MASK_COLOR := Color(0.8, 0.4, 0.8, 1.0)
+
 
 ## Array of [RectangleZone2D] nodes that will be masked by this zone.
 @export var masked_zones : Array[RectangleZone2D] = []
 
 
 func _ready() -> void:
+	
+	if Engine.is_editor_hint():
+		return
 	
 	if masked_zones.size() == 0:
 		var parent := get_parent()
@@ -36,13 +41,49 @@ func _ready() -> void:
 		for zone in masked_zones:
 			zone.add_mask(self)
 	
-	if !Engine.is_editor_hint():
-		queue_free()
+	queue_free()
 
+
+# region Getter Methods
+
+func get_color() -> Color:
+	return Color.TRANSPARENT
+	
+func is_visible_on_runtime() -> bool:
+	return false
+	
+func get_editor_color() -> Color:
+	return zone_configuration.editor_color if zone_configuration else DEFAULT_MASK_COLOR
+	
+func replaces_editor_color() -> bool:
+	return false
+	
+func get_fill_color() -> Color:
+	var color := get_editor_color()
+	var opacity := zone_configuration.fill_opacity if zone_configuration else 0.0
+	color.a = opacity / 100.0
+	return color
+	
+# endregion
+
+
+# region Setter Methods
+
+func add_mask(mask : RectangleMaskingZone2D) -> void:
+	pass
+	
+# endregion
+
+
+# region Draw Methods
 
 func _draw() -> void:
 	pass
+	
+# endregion
+	
+	
+
 		
-		
-func add_mask(mask : RectangleMaskingZone2D) -> void:
-	pass
+
+	
