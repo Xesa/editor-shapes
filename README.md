@@ -51,6 +51,24 @@ The plugin is straightforward to use. To define a shape, simply add a `Rectangle
 - If you make it a direct child of a `RectangleZone2D` node, it will mask that node.
 - Alternatively, you can add one or more `RectangleZone2D` nodes to the `Masked Zones` array to mask those shapes.
 
+# Roadmap
+
+#### Add an option to choose the masking mode
+
+Currently, these shapes are rendered using the `_draw()` function. If a mask is added to a shape, it is split into several rectangles, each of which is created by calling `_draw_rect()`. The reason for this, instead of using a shader, is that some devices without a dedicated GPU can struggle when rendering shaders, even when they are as simple as a rectangle mask.
+
+In a future update, I want to give users the option to choose the rendering mode, either through the Inspector or programmatically, so they can choose which method is used.
+
+#### Make a resource-based editable shape
+
+Although Godot already has resource-based shapes (`RectangleShape2D`, `CircleShape2D`, etc.), these are physics-based. I don't think this has a significant impact on performance or makes the editor cumbersome, but I'd like to provide the same customization options whether the shape is rendered by the node itself or through a resource.
+
+#### Add circle and polygon shapes
+
+Circle shapes are definitely something I want to add, along with the ability to mask rectangles with circles and vice versa.
+
+Polygons, on the other hand, are a bit more complicated. Godot already has a `Node2D`-based polygon node, so I might simply extend it to allow it to be masked or to mask other shapes.
+
 # FAQ
 
 #### Can I undo / redo my changes?
